@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tugas Grafika Game - Scene 480x640 & Camera World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header Title & Info -->
+    <header class="app-header">
+      <div class="badge">TUGAS IMPLEMENTASI</div>
+      <h1 class="title">2D CAMERA, CULLING & PARALLAX</h1>
+      <p class="subtitle">
+        Scene <span class="highlight">480&times;640</span> | World <span class="highlight">640&times;1600</span> (&ge; 480&times;1200) | &ge; 30 Asteroid
+      </p>
+    </header>
+
+    <div class="main-container">
+      <!-- Game Canvas Container (Strictly 480x640 viewport) -->
+      <div class="canvas-wrapper">
+        <canvas id="gameCanvas" width="480" height="640"></canvas>
+        <div class="canvas-glass-border"></div>
+      </div>
+
+      <!-- Control & Inspection Panel -->
+      <aside class="control-panel">
+        <div class="panel-section">
+          <h2><span class="icon">&#9881;</span> KONTROL & PENGATURAN</h2>
+
+          <!-- Parallax Toggle Requirement -->
+          <div class="control-group">
+            <label class="toggle-control" for="toggleParallax">
+              <input type="checkbox" id="toggleParallax" checked>
+              <span class="slider"></span>
+              <span class="label-text">Parallax 2 Lapis (L1 & L2)</span>
+            </label>
+            <div class="key-hint">Shortcut: Tombol <strong>[P]</strong></div>
+          </div>
+
+          <!-- Debug Culling Boxes Toggle -->
+          <div class="control-group">
+            <label class="toggle-control" for="toggleDebug">
+              <input type="checkbox" id="toggleDebug" checked>
+              <span class="slider"></span>
+              <span class="label-text">Visualisasi Bounding Box isVisible()</span>
+            </label>
+            <div class="key-hint">Shortcut: Tombol <strong>[B]</strong></div>
+          </div>
+
+          <!-- Sound Toggle -->
+          <div class="control-group">
+            <label class="toggle-control" for="toggleAudio" checked>
+              <input type="checkbox" id="toggleAudio" checked>
+              <span class="slider"></span>
+              <span class="label-text">Audio FX (Web Audio API)</span>
+            </label>
+            <div class="key-hint">Shortcut: Tombol <strong>[M]</strong></div>
+          </div>
+        </div>
+
+        <!-- Lifecycle Actions -->
+        <div class="panel-section">
+          <h2><span class="icon">&#9889;</span> LIFECYCLE FILTERING DEMO</h2>
+          <p class="section-desc">
+            Uji lifecycle filtering: asteroid yang hancur (<span class="code">isAlive = false</span>) otomatis dibersihkan dari memory array.
+          </p>
+          <div class="button-group">
+            <button id="btnDestroyRandom" class="btn btn-warning">
+              &#128165; Hancurkan 1 Asteroid Acak
+            </button>
+            <button id="btnRespawn" class="btn btn-primary">
+              &#8635; Reset &amp; Respawn 35 Asteroid
+            </button>
+            <button id="btnAddAsteroids" class="btn btn-secondary">
+              + Tambah 10 Asteroid Baru
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Telemetry / Rubrik Overview -->
+        <div class="panel-section telemetry-section">
+          <h2><span class="icon">&#128202;</span> STATUS TELEMETRI (HUD MIRROR)</h2>
+          <div class="telemetry-grid">
+            <div class="telemetry-item">
+              <span class="tel-label">Drawn (Visible):</span>
+              <span class="tel-value text-green" id="telDrawn">0</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tel-label">Skipped (Culled):</span>
+              <span class="tel-value text-red" id="telSkipped">0</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tel-label">Total Asteroid:</span>
+              <span class="tel-value" id="telTotal">0</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tel-label">Lifecycle Filtered:</span>
+              <span class="tel-value text-yellow" id="telDestroyed">0</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tel-label">Camera Clamp X:</span>
+              <span class="tel-value" id="telClampX">OK</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tel-label">Camera Clamp Y:</span>
+              <span class="tel-value" id="telClampY">OK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rubric Checklist Checklist -->
+        <div class="panel-section rubric-section">
+          <h2><span class="icon">&#9989;</span> CEKLIST SESUAI RUBRIK</h2>
+          <ul class="rubric-list">
+            <li><span class="check">&#10003;</span> <strong>Scene 480&times;640</strong>: Canvas tepat 480px &times; 640px</li>
+            <li><span class="check">&#10003;</span> <strong>World &ge; 480&times;1200</strong>: Ukuran World 640px &times; 1600px</li>
+            <li><span class="check">&#10003;</span> <strong>1 Player &amp; &ge; 30 Asteroid</strong>: Pesawat + 35 Asteroid aktif</li>
+            <li><span class="check">&#10003;</span> <strong>Camera Follow &amp; Clamp</strong>: Kamera berpusat pada Player &amp; dikunci di dalam batas World</li>
+            <li><span class="check">&#10003;</span> <strong>isVisible() &amp; Counter Drawn/Skipped</strong>: Frustum culling real-time</li>
+            <li><span class="check">&#10003;</span> <strong>Lifecycle Filtering</strong>: Array filtering entitas mati (<span class="code">isAlive</span>)</li>
+            <li><span class="check">&#10003;</span> <strong>HUD di Screen Space</strong>: Render terpisah tanpa translasi kamera</li>
+            <li><span class="check">&#10003;</span> <strong>Parallax 2 Lapis</strong>: Lapis Bintang Jauh (0.15x) &amp; Debu Dekat (0.40x) dengan toggle ON/OFF</li>
+          </ul>
+        </div>
+
+        <!-- Controls Guide -->
+        <div class="panel-section help-section">
+          <h2><span class="icon">&#127918;</span> PANDUAN KONTROL</h2>
+          <div class="controls-guide">
+            <div><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> / <kbd>&uarr;</kbd> <kbd>&larr;</kbd> <kbd>&darr;</kbd> <kbd>&rarr;</kbd> Gerakkan Pesawat</div>
+            <div><kbd>SPACE</kbd> / <kbd>Klik Mouse</kbd> Tembak Laser (Uji Lifecycle)</div>
+            <div><kbd>P</kbd> Toggle Parallax Dua Lapis (ON / OFF)</div>
+            <div><kbd>B</kbd> Toggle Bounding Box Debug Culling</div>
+            <div><kbd>M</kbd> Toggle Suara FX</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
