@@ -445,18 +445,18 @@ class Player {
 
     const time = performance.now() / 1000;
 
-    // Glowing alien aura di sekeliling UFO
-    ctx.shadowColor = '#00f0ff';
+    // Glowing alien aura di sekeliling UFO (Merah)
+    ctx.shadowColor = '#ef4444';
     ctx.shadowBlur = 15;
 
-    // 1. Piringan Luar UFO (Outer Flying Saucer Disc)
+    // 1. Piringan Luar UFO (Outer Flying Saucer Disc - Merah Metalik)
     const hullGrad = ctx.createRadialGradient(0, 0, 4, 0, 0, 21);
-    hullGrad.addColorStop(0, '#1e293b');
-    hullGrad.addColorStop(0.65, '#0f172a');
-    hullGrad.addColorStop(1, '#020617');
+    hullGrad.addColorStop(0, '#3f0708');
+    hullGrad.addColorStop(0.65, '#220405');
+    hullGrad.addColorStop(1, '#0e0202');
 
     ctx.fillStyle = hullGrad;
-    ctx.strokeStyle = '#00f0ff';
+    ctx.strokeStyle = '#ef4444';
     ctx.lineWidth = 2;
 
     ctx.beginPath();
@@ -464,14 +464,14 @@ class Player {
     ctx.fill();
     ctx.stroke();
 
-    // 2. Lampu Navigasi Perimeter Melingkar (Perimeter LED Lights yang berputar/berkedip)
+    // 2. Lampu Navigasi Perimeter Melingkar (Perimeter LED Lights Merah & Amber)
     const numLights = 6;
     for (let i = 0; i < numLights; i++) {
       const lightAngle = (i / numLights) * Math.PI * 2 + time * 2.5;
       const lx = Math.cos(lightAngle) * 15;
       const ly = Math.sin(lightAngle) * 11.5;
 
-      const lightColor = (i % 2 === 0) ? '#00f0ff' : '#10b981';
+      const lightColor = (i % 2 === 0) ? '#ff2233' : '#fb923c';
       ctx.fillStyle = lightColor;
       ctx.shadowColor = lightColor;
       ctx.shadowBlur = 7;
@@ -481,10 +481,10 @@ class Player {
     }
 
     // 3. Emitter / Moncong Laser Depan (Menandakan arah hadap tembakan UFO)
-    ctx.shadowColor = '#00f0ff';
+    ctx.shadowColor = '#ef4444';
     ctx.shadowBlur = 8;
-    ctx.fillStyle = '#38bdf8';
-    ctx.strokeStyle = '#00f0ff';
+    ctx.fillStyle = '#f87171';
+    ctx.strokeStyle = '#ef4444';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(17, -3);
@@ -496,21 +496,21 @@ class Player {
 
     // 4. Cincin Reaktor Plasma Tengah
     ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(0, 240, 255, 0.6)';
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.arc(0, 0, 9, 0, Math.PI * 2);
     ctx.stroke();
 
-    // 5. Kubah Kokpit Kaca UFO (Central Glowing Glass Dome)
+    // 5. Kubah Kokpit Kaca UFO (Central Glowing Glass Dome - Ruby Red)
     const domeGrad = ctx.createRadialGradient(-2, -2, 1, 0, 0, 8);
-    domeGrad.addColorStop(0, '#67e8f9');
-    domeGrad.addColorStop(0.5, '#06b6d4');
-    domeGrad.addColorStop(1, '#0e7490');
+    domeGrad.addColorStop(0, '#fca5a5');
+    domeGrad.addColorStop(0.5, '#ef4444');
+    domeGrad.addColorStop(1, '#991b1b');
 
     ctx.fillStyle = domeGrad;
-    ctx.shadowColor = '#22d3ee';
-    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#ef4444';
+    ctx.shadowBlur = 12;
     ctx.beginPath();
     ctx.arc(0, 0, 7.5, 0, Math.PI * 2);
     ctx.fill();
